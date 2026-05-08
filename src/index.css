@@ -1,0 +1,306 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "@fontsource-variable/geist-mono";
+@import "@fontsource-variable/inter";
+
+/* next-themes: html 带 .dark（或 .light）即可 */
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --radius: 0.45rem;
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.985 0 0);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --destructive-foreground: oklch(0.985 0 0);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.556 0 0);
+}
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  --font-sans: 'Inter Variable', sans-serif;
+  --font-mono: "Geist Mono Variable", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --font-heading: var(--font-sans);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+    @apply border-border outline-ring/50;
+  }
+
+  html,
+  body,
+  #root {
+    height: 100%;
+    min-height: 100%;
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    @apply bg-background text-foreground;
+  }
+  button:not(:disabled), [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+  html {
+    @apply font-sans;
+  }
+}
+
+@layer components {
+  #jsonex-shell {
+    --token-keyword: #2563eb;
+    --token-string: #059669;
+    --token-number: #d97706;
+    --token-boolean: #7c3aed;
+    --token-null: #e11d48;
+    --token-bracket: #71717a;
+    --token-comment: #71717a;
+  }
+
+  .dark #jsonex-shell {
+    --token-keyword: #60a5fa;
+    --token-string: #34d399;
+    --token-number: #fbbf24;
+    --token-boolean: #a78bfa;
+    --token-null: #fb7185;
+    --token-bracket: #a1a1aa;
+    --token-comment: #a1a1aa;
+  }
+
+  #jsonex-shell[data-code-theme='ocean'] {
+    --token-keyword: #0ea5e9;
+    --token-string: #14b8a6;
+    --token-number: #22c55e;
+    --token-boolean: #06b6d4;
+    --token-null: #f97316;
+    --token-bracket: #64748b;
+    --token-comment: #64748b;
+  }
+
+  .dark #jsonex-shell[data-code-theme='ocean'] {
+    --token-keyword: #38bdf8;
+    --token-string: #2dd4bf;
+    --token-number: #4ade80;
+    --token-boolean: #22d3ee;
+    --token-null: #fb923c;
+    --token-bracket: #94a3b8;
+    --token-comment: #94a3b8;
+  }
+
+  #jsonex-shell[data-code-theme='mono'] {
+    --token-keyword: #374151;
+    --token-string: #4b5563;
+    --token-number: #6b7280;
+    --token-boolean: #4b5563;
+    --token-null: #6b7280;
+    --token-bracket: #9ca3af;
+    --token-comment: #9ca3af;
+  }
+
+  .dark #jsonex-shell[data-code-theme='mono'] {
+    --token-keyword: #d1d5db;
+    --token-string: #9ca3af;
+    --token-number: #e5e7eb;
+    --token-boolean: #9ca3af;
+    --token-null: #e5e7eb;
+    --token-bracket: #6b7280;
+    --token-comment: #6b7280;
+  }
+
+  #jsonex-shell[data-code-theme='forest'] {
+    --token-keyword: #166534;
+    --token-string: #0d9488;
+    --token-number: #65a30d;
+    --token-boolean: #15803d;
+    --token-null: #b45309;
+    --token-bracket: #4b5563;
+    --token-comment: #4b5563;
+  }
+
+  .dark #jsonex-shell[data-code-theme='forest'] {
+    --token-keyword: #4ade80;
+    --token-string: #2dd4bf;
+    --token-number: #bef264;
+    --token-boolean: #86efac;
+    --token-null: #fbbf24;
+    --token-bracket: #9ca3af;
+    --token-comment: #9ca3af;
+  }
+
+  #jsonex-shell[data-code-theme='sunset'] {
+    --token-keyword: #c2410c;
+    --token-string: #ea580c;
+    --token-number: #ca8a04;
+    --token-boolean: #be185d;
+    --token-null: #dc2626;
+    --token-bracket: #6b7280;
+    --token-comment: #6b7280;
+  }
+
+  .dark #jsonex-shell[data-code-theme='sunset'] {
+    --token-keyword: #fb923c;
+    --token-string: #fdba74;
+    --token-number: #facc15;
+    --token-boolean: #f472b6;
+    --token-null: #f87171;
+    --token-bracket: #a1a1aa;
+    --token-comment: #a1a1aa;
+  }
+
+  #jsonex-shell[data-code-theme='neon'] {
+    --token-keyword: #7c3aed;
+    --token-string: #06b6d4;
+    --token-number: #22c55e;
+    --token-boolean: #db2777;
+    --token-null: #ef4444;
+    --token-bracket: #64748b;
+    --token-comment: #64748b;
+  }
+
+  .dark #jsonex-shell[data-code-theme='neon'] {
+    --token-keyword: #c084fc;
+    --token-string: #22d3ee;
+    --token-number: #4ade80;
+    --token-boolean: #f472b6;
+    --token-null: #f87171;
+    --token-bracket: #94a3b8;
+    --token-comment: #94a3b8;
+  }
+
+  .json-key,
+  .code-keyword {
+    color: var(--token-keyword);
+  }
+
+  .json-string,
+  .code-string {
+    color: var(--token-string);
+  }
+
+  .json-number,
+  .code-number {
+    color: var(--token-number);
+  }
+
+  .json-boolean {
+    color: var(--token-boolean);
+  }
+
+  .json-null {
+    color: var(--token-null);
+  }
+
+  .json-bracket {
+    color: var(--token-bracket);
+  }
+
+  .code-comment {
+    color: var(--token-comment);
+  }
+}

@@ -10,6 +10,7 @@ import {
   resolveJsonIndent,
   type JsonFormatStyleOptions,
 } from './json-utils'
+import { isHeavyJsonText, plainEscapeMultiline } from './heavy-input'
 import { type Lang } from './i18n'
 
 export type FormatMode = 'formatted' | 'minified'
@@ -70,7 +71,11 @@ export function useJsonFormatter(
         ? result.formatted
         : styleOutput(result.formatted)
       setOutput(styled)
-      setHighlightedOutput(syntaxHighlight(styled))
+      setHighlightedOutput(
+        isHeavyJsonText(trimmed) || isHeavyJsonText(styled)
+          ? plainEscapeMultiline(styled)
+          : syntaxHighlight(styled),
+      )
     } else {
       setParsedData(undefined)
       setOutput('')
@@ -86,7 +91,10 @@ export function useJsonFormatter(
       const parsed = JSON.parse(input.trim())
       setParsedData(parsed)
       const styled = styleOutput(result.formatted)
-      const highlighted = syntaxHighlight(styled)
+      const highlighted =
+        isHeavyJsonText(input.trim()) || isHeavyJsonText(styled)
+          ? plainEscapeMultiline(styled)
+          : syntaxHighlight(styled)
       setOutput(styled)
       setHighlightedOutput(highlighted)
       setFormatMode('formatted')
@@ -100,7 +108,10 @@ export function useJsonFormatter(
     if (!result.error) {
       const parsed = JSON.parse(input.trim())
       setParsedData(parsed)
-      const highlighted = syntaxHighlight(result.formatted)
+      const highlighted =
+        isHeavyJsonText(input.trim()) || isHeavyJsonText(result.formatted)
+          ? plainEscapeMultiline(result.formatted)
+          : syntaxHighlight(result.formatted)
       setOutput(result.formatted)
       setHighlightedOutput(highlighted)
       setFormatMode('minified')

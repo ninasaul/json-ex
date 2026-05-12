@@ -1,0 +1,161 @@
+/**
+ * Scoped Markdown preview: syntax tokens (hljs) + pre/code reset so fenced
+ * blocks are not styled like inline `code`.
+ */
+
+.markdown-preview pre > code {
+  background-color: transparent !important;
+  border-width: 0 !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+  outline: none !important;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+.markdown-preview pre code.hljs {
+  display: block;
+  width: max-content;
+  min-width: 100%;
+  box-sizing: border-box;
+  tab-size: 4;
+  color: inherit;
+}
+
+/* ---- Light: calm contrast, not neon ---- */
+.markdown-preview .hljs-comment,
+.markdown-preview .hljs-quote {
+  color: oklch(0.52 0.02 260);
+  font-style: italic;
+}
+
+.markdown-preview .hljs-keyword,
+.markdown-preview .hljs-selector-tag,
+.markdown-preview .hljs-addition,
+.markdown-preview .hljs-doctag {
+  color: oklch(0.42 0.17 264);
+}
+
+.markdown-preview .hljs-built_in,
+.markdown-preview .hljs-section,
+.markdown-preview .hljs-selector-id,
+.markdown-preview .hljs-title,
+.markdown-preview .hljs-title.class_,
+.markdown-preview .hljs-class .hljs-title {
+  color: oklch(0.4 0.14 290);
+}
+
+.markdown-preview .hljs-string,
+.markdown-preview .hljs-meta .hljs-string,
+.markdown-preview .hljs-attribute,
+.markdown-preview .hljs-template-tag,
+.markdown-preview .hljs-template-variable {
+  color: oklch(0.4 0.12 155);
+}
+
+.markdown-preview .hljs-number,
+.markdown-preview .hljs-literal {
+  color: oklch(0.48 0.14 55);
+}
+
+.markdown-preview .hljs-regexp {
+  color: oklch(0.45 0.12 200);
+}
+
+.markdown-preview .hljs-symbol,
+.markdown-preview .hljs-bullet,
+.markdown-preview .hljs-link {
+  color: oklch(0.45 0.08 240);
+}
+
+.markdown-preview .hljs-subst,
+.markdown-preview .hljs-variable,
+.markdown-preview .hljs-attr,
+.markdown-preview .hljs-selector-attr,
+.markdown-preview .hljs-selector-pseudo {
+  color: oklch(0.38 0.04 260);
+}
+
+.markdown-preview .hljs-name,
+.markdown-preview .hljs-tag {
+  color: oklch(0.38 0.12 264);
+}
+
+.markdown-preview .hljs-meta,
+.markdown-preview .hljs-meta-keyword,
+.markdown-preview .hljs-deletion {
+  color: oklch(0.5 0.03 260);
+}
+
+.markdown-preview .hljs-emphasis {
+  font-style: italic;
+}
+
+.markdown-preview .hljs-strong {
+  font-weight: 600;
+}
+
+/* ---- Dark: slightly brighter tokens on dark surfaces ---- */
+.dark .markdown-preview .hljs-comment,
+.dark .markdown-preview .hljs-quote {
+  color: oklch(0.62 0.02 260);
+}
+
+.dark .markdown-preview .hljs-keyword,
+.dark .markdown-preview .hljs-selector-tag,
+.dark .markdown-preview .hljs-addition,
+.dark .markdown-preview .hljs-doctag {
+  color: oklch(0.72 0.12 264);
+}
+
+.dark .markdown-preview .hljs-built_in,
+.dark .markdown-preview .hljs-section,
+.dark .markdown-preview .hljs-selector-id,
+.dark .markdown-preview .hljs-title,
+.dark .markdown-preview .hljs-title.class_,
+.dark .markdown-preview .hljs-class .hljs-title {
+  color: oklch(0.78 0.1 290);
+}
+
+.dark .markdown-preview .hljs-string,
+.dark .markdown-preview .hljs-meta .hljs-string,
+.dark .markdown-preview .hljs-attribute,
+.dark .markdown-preview .hljs-template-tag,
+.dark .markdown-preview .hljs-template-variable {
+  color: oklch(0.75 0.1 155);
+}
+
+.dark .markdown-preview .hljs-number,
+.dark .markdown-preview .hljs-literal {
+  color: oklch(0.78 0.11 70);
+}
+
+.dark .markdown-preview .hljs-regexp {
+  color: oklch(0.72 0.08 200);
+}
+
+.dark .markdown-preview .hljs-symbol,
+.dark .markdown-preview .hljs-bullet,
+.dark .markdown-preview .hljs-link {
+  color: oklch(0.72 0.06 240);
+}
+
+.dark .markdown-preview .hljs-subst,
+.dark .markdown-preview .hljs-variable,
+.dark .markdown-preview .hljs-attr,
+.dark .markdown-preview .hljs-selector-attr,
+.dark .markdown-preview .hljs-selector-pseudo {
+  color: oklch(0.82 0.02 260);
+}
+
+.dark .markdown-preview .hljs-name,
+.dark .markdown-preview .hljs-tag {
+  color: oklch(0.78 0.1 264);
+}
+
+.dark .markdown-preview .hljs-meta,
+.dark .markdown-preview .hljs-meta-keyword,
+.dark .markdown-preview .hljs-deletion {
+  color: oklch(0.65 0.02 260);
+}

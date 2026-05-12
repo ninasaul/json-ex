@@ -1,124 +1,138 @@
 # JsonEx
 
-[English](./README.md) | [中文](./README.zh-CN.md)
+**English** | [中文](./README.zh-CN.md)
 
-Language: **English (default)** · [Switch to Chinese](./README.zh-CN.md)
+JsonEx is a **Chrome Side Panel** extension for JSON and Markdown work. Formatting, validation, diffing, conversion, type generation, and Markdown preview all run **in your browser** with no backend.
 
-JsonEx is a Chrome Side Panel extension for daily JSON workflows: format, validate, diff, and generate type definitions.  
-All processing runs locally in the browser, with no backend dependency.
+## Overview
 
-### Features
+Three top-level modes (header toggle):
 
-- **Format and Minify JSON**
-  - Pretty print and minify in one click
-  - Indent options: `2 / 4 / 8` spaces or `Tab`
-  - Line ending options: `LF / CRLF`, optional final newline
-- **Validation**
-  - Detects invalid JSON and shows syntax errors
-- **Tree View**
-  - Visual JSON tree with collapse/expand support
-- **Diff Mode**
-  - Side-by-side compare for two JSON inputs
-  - Ignore whitespace, show only changes, inline highlight
-  - Copy diff output
-- **Type Generation**
-  - Generate types/models from JSON for:
-  - `TS / Java / Python / Go / C# / Rust / Kotlin / PHP / Swift / Ruby / C++`
-- **Editing Utilities**
-  - Escape / unescape
-  - Upload JSON files
-  - Download generated output with proper file extension
-  - Copy and clear actions
-- **History**
-  - Separate history for format mode and diff mode
-  - Reuse, delete, and clear records quickly
-- **UI and Preferences**
-  - Built-in English/Chinese UI switch
-  - Light/Dark themes
-  - Configurable editor font size, code theme, header position
-  - Auto-format and default history panel options
+| Mode | Purpose |
+|------|---------|
+| **Format** | Edit JSON, format/minify, tree view, converters, type output, repair/escape tools |
+| **Markdown** | Split editor and live preview (GFM), optional preview themes, exports |
+| **Diff** | Two JSON inputs, side-by-side diff with filters and copy |
 
-### Tech Stack
+UI language (Chinese / English), light/dark theme, and settings (font size, code colors, formatting rules, header position, etc.) are available from the header.
 
-- React + TypeScript
-- Vite
-- Chrome Extension Manifest V3 (`@crxjs/vite-plugin`)
-- Tailwind CSS
-- shadcn/ui + Radix UI
+## JSON (Format mode)
 
-### Development
+- **Format and minify** with indent `2 / 4 / 8` spaces or `Tab`
+- **Line endings** `LF` / `CRLF` and optional **final newline** (settings)
+- **Validation** with syntax error feedback
+- **Syntax-highlighted** formatted output (themeable in settings)
+- **Tree view** with collapse/expand when the document is not in the “heavy” size range (see below)
+- **Repair JSON** (`JSON5` where applicable, plus best-effort fixes for comments, trailing commas, unquoted keys, single quotes)
+- **Escape / unescape** strings
+- **Upload** `.json` (and related) and **download** result (extension follows current output type)
+- **Converters** (dropdown on the result toolbar): JSON ↔ YAML, JSON ↔ URL query string, JSON ↔ `application/x-www-form-urlencoded` style text, JSON ↔ CSV (with array/object paths where applicable)
+- **Type generation** from JSON for: TypeScript, Java, Python, Go, C#, Rust, Kotlin, PHP, Swift, Ruby, C++
+- **Auto-format** and **history** (format vs diff histories are separate; reuse, delete, or clear entries)
+
+## Diff mode
+
+- Two editors (base / target), **side-by-side** diff in the result area
+- Options such as **ignore whitespace** and **show only changes**
+- **Line-level** diff with **inline** character highlights where useful
+- **Copy** diff text; very large pairs skip full diff for responsiveness (see below)
+
+## Markdown mode
+
+- **Left**: Markdown source, toolbar inserts (headings, lists, links, tables, code fences, task lists, undo/redo for toolbar edits, etc.), upload/copy/download/clear
+- **Right**: **GFM** preview (`remark-gfm`), **syntax highlighting** in fenced code (`rehype-highlight` / lowlight)
+- **Five built-in preview styles** (readable typography; choice persisted locally)
+- **Export** preview-related outputs where supported (e.g. HTML, print/PDF flow, Word via bundled path)
+
+Draft text can be persisted in **local storage** (same-origin, device-local).
+
+## Large documents (“heavy” guardrails)
+
+To keep the UI responsive, some features degrade when size limits are exceeded (implementation in `src/lib/heavy-input.ts`):
+
+- **Single JSON text** over **350k characters**: tree view and rich syntax highlighting on the formatted pane are skipped; plain text fallback may be used
+- **Diff pair** over per-side or combined thresholds: full side-by-side diff may be skipped with an on-screen notice
+
+Adjust content or work in smaller chunks if you hit these limits.
+
+## Tech stack
+
+- React `19.x`, TypeScript `5.6.x`, Vite `8.x`
+- Chrome **Manifest V3** via `@crxjs/vite-plugin`
+- Tailwind CSS `4.x`, shadcn/ui, Radix UI / Base UI
+- `react-markdown`, `remark-gfm`, `rehype-highlight`, `lowlight`, `marked` (where used for exports), `docx` (Word export path)
+
+## Development
 
 ```bash
 npm install
 npm run dev
 ```
 
-### Build
+## Build
 
 ```bash
 npm run build
 ```
 
-Build output is generated in `dist/`.
+Output is written to `dist/`. Optional manifest check:
 
-### Load in Chrome
+```bash
+npm run verify:manifest
+```
+
+## Load the extension in Chrome
 
 1. Open `chrome://extensions`
 2. Enable **Developer mode**
-3. Click **Load unpacked**
-4. Select the `dist/` folder
-5. Pin JsonEx or open it from Chrome Side Panel
+3. **Load unpacked** and select the `dist/` directory
+4. Pin JsonEx or open it from the **Side panel**
 
-### Screenshots
+## Scripts
 
-- `docs/screenshots/format-mode.png` - format mode with tree view
-- `docs/screenshots/diff-mode.png` - side-by-side diff mode
-- `docs/screenshots/type-generation.png` - multi-language type generation
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Vite dev server |
+| `npm run build` | Typecheck + production build |
+| `npm run preview` | Preview production build |
+| `npm run test` | Vitest once |
+| `npm run test:watch` | Vitest watch |
+| `npm run verify:manifest` | Manifest / extension sanity script |
 
-### Scripts
-
-- `npm run dev` - start development mode
-- `npm run build` - build extension package
-- `npm run preview` - preview production build
-- `npm run test` - run unit tests once
-- `npm run test:watch` - run unit tests in watch mode
-
-### Project Structure
+## Repository layout (abbreviated)
 
 ```text
 JsonEx/
-├── public/
-│   ├── manifest.json
-│   └── icons/
+├── public/              # manifest copy, theme-init, logo (see also dist after build)
 ├── src/
-│   ├── App.tsx
-│   ├── background.ts
-│   ├── components/
+│   ├── App.tsx          # shell: modes, header, format/diff wiring
+│   ├── background.ts    # extension service worker
+│   ├── components/      # UI including jsonex/* panels
 │   ├── hooks/
-│   └── lib/
+│   └── lib/             # json-utils, diff-utils, type-generator, convert-utils, markdown helpers, …
 ├── docs/
-│   └── product.md
+│   ├── product.md       # product notes (Chinese)
+│   └── screenshots/     # optional UI screenshots
+├── scripts/
 └── package.json
 ```
 
-### Privacy
+## Privacy
 
-- All JSON parsing, formatting, diffing, and type generation run locally
-- No external API is required for core features
+Core parsing, formatting, diffing, conversion, highlighting, and type generation do **not** require an external API. Data stays in the browser unless you explicitly export or copy it elsewhere.
 
-### Contributing
+## Contributing
 
-Issues and pull requests are welcome.  
-For feature requests, please include your use case and expected behavior.
+Issues and pull requests are welcome. For features, describe the use case and expected behavior.
 
-### Roadmap
+## Roadmap (non-exhaustive)
 
-- [ ] Sort keys and more formatting presets
-- [ ] Better JSON tree interactions and path copy
-- [ ] JSON patch/diff export formats
-- [ ] Session history import/export
-- [ ] Large JSON performance optimizations
+- Key sorting and more formatting presets
+- Richer JSON tree interactions (e.g. path copy)
+- Structured diff / patch export formats
+- History import/export
+- Further performance work for very large payloads
 
-### License
+## License
 
-Released under the [MIT License](./LICENSE).
+[MIT License](./LICENSE).

@@ -1,124 +1,138 @@
 # JsonEx
 
-[English](./README.md) | [中文](./README.zh-CN.md)
+[English](./README.md) | **中文**
 
-语言： [Switch to English](./README.md) · **中文（默认）**
+JsonEx 是一款 **Chrome 侧边栏（Side Panel）** 扩展，面向日常 **JSON** 与 **Markdown** 工作流：格式化、校验、对比、互转、类型生成、Markdown 预览与导出等均在 **浏览器本地** 完成，不依赖自有后端。
 
-JsonEx 是一个基于 Chrome Side Panel 的 JSON 工具插件，覆盖格式化、校验、对比与类型生成等常见开发场景。  
-所有处理均在浏览器本地执行，不依赖后端服务。
+## 总览
 
-### 功能特性
+顶栏提供三种工作模式切换：
 
-- **JSON 格式化与压缩**
-  - 一键格式化（Pretty Print）和压缩（Minify）
-  - 缩进支持 `2 / 4 / 8` 空格与 `Tab`
-  - 支持 `LF / CRLF` 换行与末尾换行开关
-- **语法校验**
-  - 非法 JSON 可识别并提示语法错误
-- **树形视图**
-  - 支持树形结构浏览与整树折叠/展开
-- **Diff 对比模式**
-  - 左右 JSON 并排对比
-  - 支持忽略空白、仅看变更、行内高亮
-  - 支持复制 Diff 结果
-- **类型代码生成**
-  - 可从 JSON 生成以下语言类型代码：
-  - `TS / Java / Python / Go / C# / Rust / Kotlin / PHP / Swift / Ruby / C++`
-- **编辑辅助**
-  - 转义 / 反转义
-  - 上传 JSON 文件
-  - 下载结果（按类型自动扩展名）
-  - 一键复制与清空
-- **历史记录**
-  - 格式化模式与 Diff 模式独立历史
-  - 支持快速回填、删除、清空
-- **界面与偏好**
-  - 内置中英文界面切换
-  - 支持明暗主题
-  - 支持编辑器字号、代码主题、顶栏位置等配置
-  - 支持自动格式化与历史栏默认展开
+| 模式 | 说明 |
+|------|------|
+| **格式化** | JSON 编辑、格式化/压缩、树视图、转换器、类型输出、修复/转义等工具 |
+| **Markdown** | 分栏编辑与实时预览（GFM）、多套预览风格、导出能力 |
+| **对比** | 双份 JSON 输入，并排 Diff，可筛选与复制 |
 
-### 技术栈
+界面 **中/英**、**亮/暗色** 主题，以及 **设置**（编辑器字号、代码配色、格式规则、顶栏位置、自动格式化与历史栏默认展开等）均在顶栏右侧入口。
 
-- React + TypeScript
-- Vite
-- Chrome Extension Manifest V3（`@crxjs/vite-plugin`）
-- Tailwind CSS
-- shadcn/ui + Radix UI
+## JSON（格式化模式）
 
-### 本地开发
+- **格式化 / 压缩**，缩进支持 `2 / 4 / 8` 空格或 `Tab`
+- **换行符** `LF` / `CRLF`，可选 **文件末尾换行**（设置内）
+- **语法校验** 与错误提示
+- 格式化结果支持 **语法高亮**（配色可在设置中切换）
+- **树形视图**（在文档未超过「大体积」阈值时可用，见下文）
+- **修复 JSON**：优先 **JSON5** 兼容解析，并辅以注释去除、尾逗号、未加引号键名、单引号等尽力修复
+- **转义 / 反转义**
+- **上传** JSON 相关文件、**下载**当前结果（扩展名随输出类型）
+- **转换器**（结果区工具栏下拉）：JSON ↔ YAML、JSON ↔ QueryString、JSON ↔ 类 FormData 文本、JSON ↔ CSV（含数组/路径等约束说明）
+- 从 JSON **生成类型**：TypeScript、Java、Python、Go、C#、Rust、Kotlin、PHP、Swift、Ruby、C++
+- **自动格式化** 与 **历史记录**（格式化与 Diff 历史相互独立，可回填、删除、清空）
+
+## Diff 模式
+
+- 左右 **双栏输入**，结果区 **并排对比**
+- 支持 **忽略空白**、**仅显示变更** 等选项
+- **行级** Diff 与 **行内** 差异高亮
+- **复制** Diff 文本；超大体积时可能跳过完整并排计算以保证流畅（见下文）
+
+## Markdown 模式
+
+- **左侧**：Markdown 源码、工具条插入（标题、列表、链接、表格、代码块、任务列表、工具条级撤销/重做等）、上传/复制/下载/清空
+- **右侧**：**GFM** 预览（`remark-gfm`），围栏代码 **语法高亮**（`rehype-highlight` / lowlight）
+- **五套内置预览风格**（排版主题，选择会写入本地存储）
+- **导出**：如 HTML、走系统打印的 PDF 流程、Word（.docx）等（以当前实现为准）
+
+草稿可 **本地持久化**（同源、本机）。
+
+## 大体积 JSON 的降级策略
+
+为保持界面可交互，超过阈值时会关闭部分重功能（实现见 `src/lib/heavy-input.ts`）：
+
+- **单份 JSON 文本** 超过约 **35 万字符**：树视图与结果区富语法高亮可能关闭，改为偏文本的展示
+- **Diff 两侧或合计** 超过阈值：可能 **跳过完整并排 Diff** 并给出提示
+
+若触达限制，可拆分内容或先在本地精简后再操作。
+
+## 技术栈
+
+- React `19.x`、TypeScript `5.6.x`、Vite `8.x`
+- Chrome **Manifest V3**（`@crxjs/vite-plugin`）
+- Tailwind CSS `4.x`、shadcn/ui、Radix UI / Base UI
+- `react-markdown`、`remark-gfm`、`rehype-highlight`、`lowlight`、`marked`（导出相关）、`docx`（Word 导出路径）
+
+## 本地开发
 
 ```bash
 npm install
 npm run dev
 ```
 
-### 构建
+## 构建
 
 ```bash
 npm run build
 ```
 
-构建产物位于 `dist/`。
+产物在 `dist/`。可选执行扩展清单检查：
 
-### 在 Chrome 中加载
+```bash
+npm run verify:manifest
+```
+
+## 在 Chrome 中加载
 
 1. 打开 `chrome://extensions`
-2. 开启「开发者模式」
-3. 点击「加载已解压的扩展程序」
-4. 选择 `dist/` 目录
-5. 固定 JsonEx 或从侧边栏入口打开
+2. 开启 **开发者模式**
+3. **加载已解压的扩展程序**，选择 `dist/` 目录
+4. 固定 JsonEx 或通过 **侧边栏** 打开
 
-### 截图
+## 脚本
 
-- `docs/screenshots/format-mode.png` - 格式化模式与树形视图
-- `docs/screenshots/diff-mode.png` - 并排 Diff 对比模式
-- `docs/screenshots/type-generation.png` - 多语言类型生成
+| 命令 | 说明 |
+|------|------|
+| `npm run dev` | 启动 Vite 开发 |
+| `npm run build` | 类型检查 + 生产构建 |
+| `npm run preview` | 预览生产构建 |
+| `npm run test` | 单次 Vitest |
+| `npm run test:watch` | Vitest 监听 |
+| `npm run verify:manifest` | 清单与扩展相关校验脚本 |
 
-### 脚本
-
-- `npm run dev` - 启动开发环境
-- `npm run build` - 构建插件产物
-- `npm run preview` - 预览构建结果
-- `npm run test` - 单次运行单元测试
-- `npm run test:watch` - 监听模式运行单元测试
-
-### 目录结构
+## 仓库结构（节选）
 
 ```text
 JsonEx/
-├── public/
-│   ├── manifest.json
-│   └── icons/
+├── public/              # manifest、主题脚本、logo 等（构建后亦见 dist）
 ├── src/
-│   ├── App.tsx
-│   ├── background.ts
-│   ├── components/
+│   ├── App.tsx          # 壳层：模式、顶栏、格式化/Diff 编排
+│   ├── background.ts    # Service worker
+│   ├── components/      # 含 jsonex/* 各面板
 │   ├── hooks/
-│   └── lib/
+│   └── lib/             # json-utils、diff-utils、type-generator、convert-utils、Markdown 相关等
 ├── docs/
-│   └── product.md
+│   ├── product.md
+│   └── screenshots/
+├── scripts/
 └── package.json
 ```
 
-### 隐私说明
+## 隐私说明
 
-- JSON 的解析、格式化、对比、类型生成均在本地执行
-- 核心功能不依赖外部 API
+解析、格式化、对比、转换、高亮与类型生成等核心能力 **不依赖** 外部 API。数据默认留在本机，除非你主动复制或导出。
 
-### 贡献
+## 贡献
 
-欢迎提交 Issue 与 Pull Request。  
-提交需求时建议附上使用场景与预期行为。
+欢迎 Issue 与 Pull Request。功能类需求请尽量写清 **使用场景** 与 **预期行为**。
 
-### 路线图
+## 路线图（非穷尽）
 
-- [ ] 键排序与更多格式化预设
-- [ ] 更强的树形交互与路径复制
-- [ ] 支持 JSON patch/diff 导出格式
-- [ ] 会话历史导入/导出
-- [ ] 大型 JSON 性能优化
+- 键排序与更多格式化预设
+- 更强的树交互（如路径复制）
+- 结构化 Diff / Patch 导出
+- 历史记录导入/导出
+- 更大 JSON 场景下的性能优化
 
-### 许可证
+## 许可证
 
-本项目采用 [MIT License](./LICENSE) 开源。
+[MIT License](./LICENSE)。

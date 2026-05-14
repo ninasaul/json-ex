@@ -158,6 +158,15 @@ function escapeHtml(code: string): string {
     .replace(/>/g, '&gt;')
 }
 
+/** Light syntax hints for non-JSON code editors (strings and comments). */
+export function syntaxHighlightPlain(code: string): string {
+  let html = escapeHtml(code)
+  html = html.replace(/("(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*')/g, '<span class="code-string">$1</span>')
+  html = html.replace(/(\/\/.*$)/gm, '<span class="code-comment">$1</span>')
+  html = html.replace(/(\/\*[\s\S]*?\*\/)/g, '<span class="code-comment">$1</span>')
+  return html
+}
+
 export function syntaxHighlightCode(code: string, mode: string): string {
   let html = escapeHtml(code)
   html = html.replace(/("(?:[^"\\]|\\.)*")/g, '<span class="code-string">$1</span>')

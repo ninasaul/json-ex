@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils'
 
-export const MARKDOWN_PREVIEW_STYLE_STORAGE_KEY = 'jsonex-markdown-preview-style'
+export const MARKDOWN_PREVIEW_STYLE_STORAGE_KEY = 'sidefmt-markdown-preview-style'
 
 export const MARKDOWN_PREVIEW_STYLE_IDS = ['default', 'minimal', 'serif', 'technical', 'soft'] as const
 

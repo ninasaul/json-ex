@@ -1,22 +1,25 @@
-# JsonEx
+# SIDEFMT
 
 [English](./README.md) | **中文**
 
-JsonEx 是一款 **Chrome 侧边栏（Side Panel）** 扩展，面向日常 **JSON** 与 **Markdown** 工作流：格式化、校验、对比、互转、类型生成、Markdown 预览与导出等均在 **浏览器本地** 完成，不依赖自有后端。
+SIDEFMT 是一款 **Chrome 侧边栏（Side Panel）** 扩展，面向 **JSON**、**通用源代码格式化** 与 **Markdown** 工作流：JSON 格式化与修复、基于 **Prettier** 的多语言排版、对比、互转、类型生成、Markdown 预览与导出等均在 **浏览器本地** 完成，不依赖自有后端。
 
 ## 总览
 
-顶栏提供三种工作模式切换：
+顶栏提供 **四种** 工作模式切换：
 
 | 模式 | 说明 |
 |------|------|
-| **格式化** | JSON 编辑、格式化/压缩、树视图、转换器、类型输出、修复/转义等工具 |
+| **Json格式化** | JSON 编辑、格式化/压缩、树视图、转换器、类型输出、修复/转义等工具 |
+| **代码格式化** | 使用浏览器内 **Prettier** 对 TypeScript、JavaScript、HTML、CSS、Markdown、YAML、GraphQL 排版；结果区只读语法高亮 |
 | **Markdown** | 分栏编辑与实时预览（GFM）、多套预览风格、导出能力 |
 | **对比** | 双份 JSON 输入，并排 Diff，可筛选与复制 |
 
-界面 **中/英**、**亮/暗色** 主题，以及 **设置**（编辑器字号、代码配色、格式规则、顶栏位置、自动格式化与历史栏默认展开等）均在顶栏右侧入口。
+界面 **中/英**、**亮/暗色** 主题，以及 **设置**（编辑器字号、代码配色、与 JSON/代码格式化共用的缩进与换行规则、顶栏位置、自动格式化与历史栏默认展开等）均在顶栏右侧入口。
 
-## JSON（格式化模式）
+**代码格式化** 与 **Json格式化** 在排版规则上共用设置中的 **缩进（Tab / 空格与宽度 `2 / 4 / 8`）**、**换行符 `LF` / `CRLF`**、**文件末尾换行** 等选项。**JSON** 请始终在 **Json格式化** 模式处理（含 JSON5 修复、转换器、树视图）；代码工作台 **不** 承担 JSON 专用能力。
+
+## JSON（Json格式化模式）
 
 - **格式化 / 压缩**，缩进支持 `2 / 4 / 8` 空格或 `Tab`
 - **换行符** `LF` / `CRLF`，可选 **文件末尾换行**（设置内）
@@ -29,6 +32,14 @@ JsonEx 是一款 **Chrome 侧边栏（Side Panel）** 扩展，面向日常 **JS
 - **转换器**（结果区工具栏下拉）：JSON ↔ YAML、JSON ↔ QueryString、JSON ↔ 类 FormData 文本、JSON ↔ CSV（含数组/路径等约束说明）
 - 从 JSON **生成类型**：TypeScript、Java、Python、Go、C#、Rust、Kotlin、PHP、Swift、Ruby、C++
 - **自动格式化** 与 **历史记录**（格式化与 Diff 历史相互独立，可回填、删除、清空）
+
+## 代码格式化模式
+
+- **语言**：TypeScript、JavaScript、HTML、CSS、Markdown、YAML、GraphQL（工具栏选择解析器）
+- **引擎**：浏览器内 **Prettier standalone** 与对应官方插件，无需本机 CLI
+- **快捷键**：`⌘+Enter` / `Ctrl+Enter` 执行格式化
+- **输出**：格式化文本；结果侧 **语法高亮** 只读展示（超大体积时可能与 JSON 结果区类似降级）
+- **样式**：遵循设置中与 JSON 格式化一致的 Tab/空格、缩进宽度、换行符与末尾换行
 
 ## Diff 模式
 
@@ -46,12 +57,13 @@ JsonEx 是一款 **Chrome 侧边栏（Side Panel）** 扩展，面向日常 **JS
 
 草稿可 **本地持久化**（同源、本机）。
 
-## 大体积 JSON 的降级策略
+## 大体积与降级策略
 
 为保持界面可交互，超过阈值时会关闭部分重功能（实现见 `src/lib/heavy-input.ts`）：
 
 - **单份 JSON 文本** 超过约 **35 万字符**：树视图与结果区富语法高亮可能关闭，改为偏文本的展示
 - **Diff 两侧或合计** 超过阈值：可能 **跳过完整并排 Diff** 并给出提示
+- **代码格式化** 结果在极大体积时，高亮展示也可能降级
 
 若触达限制，可拆分内容或先在本地精简后再操作。
 
@@ -60,6 +72,7 @@ JsonEx 是一款 **Chrome 侧边栏（Side Panel）** 扩展，面向日常 **JS
 - React `19.x`、TypeScript `5.6.x`、Vite `8.x`
 - Chrome **Manifest V3**（`@crxjs/vite-plugin`）
 - Tailwind CSS `4.x`、shadcn/ui、Radix UI / Base UI
+- **Prettier**（`prettier/standalone` + 插件）用于代码格式化模式
 - `react-markdown`、`remark-gfm`、`rehype-highlight`、`lowlight`、`marked`（导出相关）、`docx`（Word 导出路径）
 
 ## 本地开发
@@ -86,7 +99,7 @@ npm run verify:manifest
 1. 打开 `chrome://extensions`
 2. 开启 **开发者模式**
 3. **加载已解压的扩展程序**，选择 `dist/` 目录
-4. 固定 JsonEx 或通过 **侧边栏** 打开
+4. 固定 SIDEFMT 或通过 **侧边栏** 打开
 
 ## 脚本
 
@@ -102,14 +115,16 @@ npm run verify:manifest
 ## 仓库结构（节选）
 
 ```text
-JsonEx/
+SIDEFMT/
 ├── public/              # manifest、主题脚本、logo 等（构建后亦见 dist）
 ├── src/
-│   ├── App.tsx          # 壳层：模式、顶栏、格式化/Diff 编排
+│   ├── App.tsx          # 壳层：模式、顶栏、JSON/Diff 与代码/Markdown 编排
 │   ├── background.ts    # Service worker
 │   ├── components/      # 含 jsonex/* 各面板
+│   │   └── jsonex/
+│   │       └── code-format-workspace.tsx   # Prettier 代码格式化界面
 │   ├── hooks/
-│   └── lib/             # json-utils、diff-utils、type-generator、convert-utils、Markdown 相关等
+│   └── lib/             # json-utils、code-format-utils、diff-utils、type-generator 等
 ├── docs/
 │   ├── product.md
 │   └── screenshots/
@@ -119,7 +134,7 @@ JsonEx/
 
 ## 隐私说明
 
-解析、格式化、对比、转换、高亮与类型生成等核心能力 **不依赖** 外部 API。数据默认留在本机，除非你主动复制或导出。
+解析、格式化、对比、转换、高亮、Prettier 排版与类型生成等核心能力 **不依赖** 外部 API。数据默认留在本机，除非你主动复制或导出。偏好与历史使用 `sidefmt-*` 本地存储键；自旧版 JsonEx 升级时会在启动时一次性从 `jsonex-*` 迁移。
 
 ## 贡献
 

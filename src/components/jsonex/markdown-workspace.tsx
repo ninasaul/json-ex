@@ -62,7 +62,7 @@ import {
   type MarkdownPreviewStyleId,
 } from '@/lib/markdown-preview-styles'
 
-const STORAGE_KEY = 'jsonex-markdown-draft'
+const STORAGE_KEY = 'sidefmt-markdown-draft'
 const MAX_EDITOR_HISTORY = 80
 
 function preventBlur(e: React.MouseEvent) {

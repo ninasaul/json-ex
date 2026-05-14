@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { applyJsonFormatStyle, formatJson, minifyJson, repairJsonLike, resolveJsonIndent } from '@/lib/json-utils'
+import { applyJsonFormatStyle, formatJson, minifyJson, repairJsonLike, resolveJsonIndent, syntaxHighlightPlain } from '@/lib/json-utils'
 
 describe('json-utils', () => {
   it('resolveJsonIndent uses tab when enabled', () => {
@@ -38,6 +38,13 @@ describe('json-utils', () => {
     expect(crlfTrail).toBe('{\r\n}\r\n')
   })
 
+  it('syntaxHighlightPlain escapes HTML and wraps strings', () => {
+    const html = syntaxHighlightPlain(`const s = "<x>";\n// c`)
+    expect(html).toContain('&lt;x&gt;')
+    expect(html).toContain('code-string')
+    expect(html).toContain('code-comment')
+  })
+
   it('repairJsonLike repairs common syntax issues', () => {
     const broken = `
     // comment
@@ -52,4 +59,3 @@ describe('json-utils', () => {
     expect(res.formatted).toContain('"b": 1')
   })
 })
-

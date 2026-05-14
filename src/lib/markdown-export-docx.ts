@@ -19,8 +19,8 @@ import {
 
 marked.setOptions({ gfm: true })
 
-const BULLET_REF = 'jsonex-md-bullet'
-const ORDERED_REF = 'jsonex-md-ordered'
+const BULLET_REF = 'sidefmt-md-bullet'
+const ORDERED_REF = 'sidefmt-md-ordered'
 
 function triggerDownload(blob: Blob, filename: string): void {
   const url = URL.createObjectURL(blob)

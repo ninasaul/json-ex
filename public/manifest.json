@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "JsonEx - JSON Formatter",
+  "name": "SIDEFMT",
   "version": "1.0.0",
-  "description": "Format, validate, and beautify JSON with syntax highlighting",
+  "description": "Side panel: JSON, Prettier code format, Markdown, diff. Runs locally.",
   "minimum_chrome_version": "114",
   "permissions": ["clipboardWrite", "storage", "sidePanel", "windows"],
   "background": {
@@ -10,10 +10,13 @@
     "type": "module"
   },
   "action": {
-    "default_title": "JsonEx",
+    "default_title": "SIDEFMT",
     "default_icon": {
       "16": "icons/icon16.png",
+      "24": "icons/icon24.png",
+      "32": "icons/icon32.png",
       "48": "icons/icon48.png",
+      "96": "icons/icon96.png",
       "128": "icons/icon128.png"
     }
   },
@@ -22,7 +25,10 @@
   },
   "icons": {
     "16": "icons/icon16.png",
+    "24": "icons/icon24.png",
+    "32": "icons/icon32.png",
     "48": "icons/icon48.png",
+    "96": "icons/icon96.png",
     "128": "icons/icon128.png"
   }
 }

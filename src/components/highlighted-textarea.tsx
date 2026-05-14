@@ -1,5 +1,5 @@
 import { useRef, useCallback, useEffect } from 'react'
-import { syntaxHighlight } from '@/lib/json-utils'
+import { syntaxHighlight, syntaxHighlightPlain } from '@/lib/json-utils'
 
 interface Props {
   value: string
@@ -8,9 +8,19 @@ interface Props {
   placeholder?: string
   spellCheck?: boolean
   editorStyle?: React.CSSProperties
+  /** `json` uses JSON token colors; `plain` uses generic string/comment hints for source code. */
+  highlight?: 'json' | 'plain'
 }
 
-export function HighlightedTextarea({ value, onChange, onKeyDown, placeholder, spellCheck, editorStyle }: Props) {
+export function HighlightedTextarea({
+  value,
+  onChange,
+  onKeyDown,
+  placeholder,
+  spellCheck,
+  editorStyle,
+  highlight = 'json',
+}: Props) {
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const preRef = useRef<HTMLPreElement>(null)
 
@@ -39,7 +49,7 @@ export function HighlightedTextarea({ value, onChange, onKeyDown, placeholder, s
           pointer-events-none"
         style={editorStyle}
         dangerouslySetInnerHTML={{
-          __html: value ? syntaxHighlight(value) + '\n' : '',
+          __html: value ? (highlight === 'plain' ? syntaxHighlightPlain(value) : syntaxHighlight(value)) + '\n' : '',
         }}
       />
       <textarea

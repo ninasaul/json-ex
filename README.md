@@ -1,22 +1,25 @@
-# JsonEx
+# SIDEFMT
 
 **English** | [中文](./README.zh-CN.md)
 
-JsonEx is a **Chrome Side Panel** extension for JSON and Markdown work. Formatting, validation, diffing, conversion, type generation, and Markdown preview all run **in your browser** with no backend.
+SIDEFMT is a **Chrome Side Panel** extension for **JSON**, **general source code formatting**, and **Markdown**. Formatting, validation, diffing, conversion, type generation, Prettier-based code layout, and Markdown preview all run **in your browser** with no backend.
 
 ## Overview
 
-Three top-level modes (header toggle):
+Four top-level modes (header toggle):
 
 | Mode | Purpose |
 |------|---------|
-| **Format** | Edit JSON, format/minify, tree view, converters, type output, repair/escape tools |
+| **JSON format** | Edit JSON, format/minify, tree view, converters, type output, repair/escape tools |
+| **Code format** | Format TypeScript, JavaScript, HTML, CSS, Markdown, YAML, or GraphQL with **Prettier** (browser bundle); result pane syntax highlighting |
 | **Markdown** | Split editor and live preview (GFM), optional preview themes, exports |
 | **Diff** | Two JSON inputs, side-by-side diff with filters and copy |
 
-UI language (Chinese / English), light/dark theme, and settings (font size, code colors, formatting rules, header position, etc.) are available from the header.
+UI language (Chinese / English), light/dark theme, and settings (font size, code colors, formatting rules for JSON and code format, header position, etc.) are available from the header.
 
-## JSON (Format mode)
+**Code format** reuses the same style controls as JSON formatting where applicable: tab vs spaces, indent width (`2 / 4 / 8`), line endings `LF` / `CRLF`, and optional final newline. **JSON** documents should stay in **JSON format** mode (JSON5 repair, converters, tree); the code workspace intentionally does not replace that path.
+
+## JSON (JSON format mode)
 
 - **Format and minify** with indent `2 / 4 / 8` spaces or `Tab`
 - **Line endings** `LF` / `CRLF` and optional **final newline** (settings)
@@ -29,6 +32,14 @@ UI language (Chinese / English), light/dark theme, and settings (font size, code
 - **Converters** (dropdown on the result toolbar): JSON ↔ YAML, JSON ↔ URL query string, JSON ↔ `application/x-www-form-urlencoded` style text, JSON ↔ CSV (with array/object paths where applicable)
 - **Type generation** from JSON for: TypeScript, Java, Python, Go, C#, Rust, Kotlin, PHP, Swift, Ruby, C++
 - **Auto-format** and **history** (format vs diff histories are separate; reuse, delete, or clear entries)
+
+## Code format mode
+
+- **Languages**: TypeScript, JavaScript, HTML, CSS, Markdown, YAML, GraphQL (parser selected in the toolbar)
+- **Engine**: Prettier **standalone** in the browser with the matching official plugins (no CLI)
+- **Shortcut**: `⌘+Enter` / `Ctrl+Enter` runs format
+- **Output**: formatted text with read-only **syntax highlighting** on the result side (large outputs may fall back like the JSON result pane)
+- **Style**: follows **Settings** / JSON format rules for tabs, indent width, line endings, and trailing newline
 
 ## Diff mode
 
@@ -52,6 +63,7 @@ To keep the UI responsive, some features degrade when size limits are exceeded (
 
 - **Single JSON text** over **350k characters**: tree view and rich syntax highlighting on the formatted pane are skipped; plain text fallback may be used
 - **Diff pair** over per-side or combined thresholds: full side-by-side diff may be skipped with an on-screen notice
+- **Code format** output uses similar heuristics for very large highlighted output
 
 Adjust content or work in smaller chunks if you hit these limits.
 
@@ -60,6 +72,7 @@ Adjust content or work in smaller chunks if you hit these limits.
 - React `19.x`, TypeScript `5.6.x`, Vite `8.x`
 - Chrome **Manifest V3** via `@crxjs/vite-plugin`
 - Tailwind CSS `4.x`, shadcn/ui, Radix UI / Base UI
+- **Prettier** (`prettier/standalone` + plugins) for code format mode
 - `react-markdown`, `remark-gfm`, `rehype-highlight`, `lowlight`, `marked` (where used for exports), `docx` (Word export path)
 
 ## Development
@@ -86,7 +99,7 @@ npm run verify:manifest
 1. Open `chrome://extensions`
 2. Enable **Developer mode**
 3. **Load unpacked** and select the `dist/` directory
-4. Pin JsonEx or open it from the **Side panel**
+4. Pin SIDEFMT or open it from the **Side panel**
 
 ## Scripts
 
@@ -102,14 +115,16 @@ npm run verify:manifest
 ## Repository layout (abbreviated)
 
 ```text
-JsonEx/
+SIDEFMT/
 ├── public/              # manifest copy, theme-init, logo (see also dist after build)
 ├── src/
-│   ├── App.tsx          # shell: modes, header, format/diff wiring
+│   ├── App.tsx          # shell: modes, header, JSON/diff vs code vs markdown
 │   ├── background.ts    # extension service worker
 │   ├── components/      # UI including jsonex/* panels
+│   │   └── jsonex/
+│   │       └── code-format-workspace.tsx   # Prettier code format UI
 │   ├── hooks/
-│   └── lib/             # json-utils, diff-utils, type-generator, convert-utils, markdown helpers, …
+│   └── lib/             # json-utils, code-format-utils, diff-utils, type-generator, …
 ├── docs/
 │   ├── product.md       # product notes (Chinese)
 │   └── screenshots/     # optional UI screenshots
@@ -119,7 +134,7 @@ JsonEx/
 
 ## Privacy
 
-Core parsing, formatting, diffing, conversion, highlighting, and type generation do **not** require an external API. Data stays in the browser unless you explicitly export or copy it elsewhere.
+Core parsing, formatting, diffing, conversion, highlighting, Prettier formatting, and type generation do **not** require an external API. Data stays in the browser unless you explicitly export or copy it elsewhere. Preferences and history use `sidefmt-*` keys in local storage; one-time migration copies legacy `jsonex-*` keys from older builds on startup.
 
 ## Contributing
 

@@ -3,7 +3,8 @@ node_modules
 .vscode
 dist
 .cursor
+.cursoragent
 .history
-
+.deepseek
 docs/
 

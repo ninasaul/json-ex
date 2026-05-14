@@ -60,7 +60,7 @@ export function JsonexMainLayout({
             {source}
           </Panel>
           <ResizeHandle
-            id="resize-jsonex-panels"
+            id="resize-sidefmt-panels"
             aria-label={resizePanelsBetweenSourceResultAria}
             className={columnHandleClassFormat}
           />

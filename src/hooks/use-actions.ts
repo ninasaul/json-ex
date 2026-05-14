@@ -99,7 +99,7 @@ export function useActions(opts: {
       const url = URL.createObjectURL(blob)
       const link = document.createElement('a')
       link.href = url
-      link.download = `jsonex-output.${EXT_BY_MODE[mode]}`
+      link.download = `sidefmt-output.${EXT_BY_MODE[mode]}`
       document.body.appendChild(link)
       link.click()
       link.remove()
@@ -117,7 +117,7 @@ export function useActions(opts: {
       const url = URL.createObjectURL(blob)
       const link = document.createElement('a')
       link.href = url
-      link.download = `jsonex-output.${ext}`
+      link.download = `sidefmt-output.${ext}`
       document.body.appendChild(link)
       link.click()
       link.remove()
@@ -147,7 +147,7 @@ export function useActions(opts: {
       },
       () => {
         const lastErr = chrome.runtime.lastError
-        if (lastErr) console.warn('[JsonEx] windows.create:', lastErr.message)
+        if (lastErr) console.warn('[SIDEFMT] windows.create:', lastErr.message)
       },
     )
   }, [])

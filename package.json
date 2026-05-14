@@ -1,9 +1,11 @@
 {
-  "name": "json-ex",
+  "name": "sidefmt",
   "version": "1.0.0",
   "private": true,
   "type": "module",
   "scripts": {
+    "icons:generate": "node scripts/generate-extension-icons.mjs",
+    "prebuild": "node scripts/generate-extension-icons.mjs",
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
@@ -34,6 +36,7 @@
     "lowlight": "^3.3.0",
     "marked": "^18.0.3",
     "next-themes": "^0.4.6",
+    "prettier": "^3.8.3",
     "radix-ui": "^1.4.3",
     "react": "^19.2.6",
     "react-day-picker": "^9.14.0",
@@ -60,6 +63,7 @@
     "@vitejs/plugin-react": "^6.0.1",
     "jsdom": "^29.1.1",
     "postcss": "^8.5.14",
+    "sharp": "^0.34.5",
     "tailwindcss": "^4.2.4",
     "typescript": "^5.6.3",
     "vite": "^8.0.11",

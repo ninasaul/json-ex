@@ -32,7 +32,7 @@ describe('useHistory', () => {
   it('records a new item after debounce when enabled', () => {
     const { result } = renderHook(() =>
       useHistory({
-        storageKey: 'jsonex-test-history',
+        storageKey: 'sidefmt-test-history',
         limit: 5,
         enabled: true,
         debounceMs: 40,
@@ -55,7 +55,7 @@ describe('useHistory', () => {
   it('clear removes items', () => {
     const { result } = renderHook(() =>
       useHistory({
-        storageKey: 'jsonex-test-history-2',
+        storageKey: 'sidefmt-test-history-2',
         limit: 5,
         enabled: true,
         debounceMs: 10,

@@ -1,5 +1,6 @@
 (function () {
-  var theme = localStorage.getItem('jsonex-theme') || 'system';
+  var theme =
+    localStorage.getItem('sidefmt-theme') || localStorage.getItem('jsonex-theme') || 'system';
   var isDark =
     theme === 'dark' ||
     (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);

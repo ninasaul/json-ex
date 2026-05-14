@@ -17,6 +17,7 @@ import { JsonexMainLayout } from '@/components/jsonex/jsonex-main-layout'
 import { FormatSourcePanel } from '@/components/jsonex/format-source-panel'
 import { DiffComparePanel } from '@/components/jsonex/diff-compare-panel'
 import { MarkdownWorkspace } from '@/components/jsonex/markdown-workspace'
+import { CodeFormatWorkspace } from '@/components/jsonex/code-format-workspace'
 import { JsonexOutputBody } from '@/components/jsonex/jsonex-output-body'
 import {
   HISTORY_KEY,
@@ -108,6 +109,8 @@ import {
   CodeSquareIcon,
 } from '@hugeicons/core-free-icons'
 
+type WorkMode = 'format' | 'code' | 'diff' | 'markdown'
+
 function App() {
   const { lang, t, toggleLang } = useI18n()
   const { theme, toggleTheme } = useTheme()
@@ -190,7 +193,7 @@ function App() {
 
   const [typeMode, setTypeMode] = useState<TypeMode>(derived.defaultTypeMode)
   const [historyOpen, setHistoryOpen] = useState(derived.historyDefaultOpen)
-  const [workMode, setWorkMode] = useState<'format' | 'diff' | 'markdown'>('format')
+  const [workMode, setWorkMode] = useState<WorkMode>('format')
   const [diffInput, setDiffInput] = useState('')
   const [diffIgnoreWhitespace, setDiffIgnoreWhitespace] = useState(true)
   const [diffOnlyChanges, setDiffOnlyChanges] = useState(false)
@@ -394,11 +397,11 @@ function App() {
   useEffect(() => {
     if (workMode === 'diff') setHistoryOpen(false)
     else setDiffHistoryOpen(false)
-    if (workMode === 'markdown') setHistoryOpen(false)
+    if (workMode === 'markdown' || workMode === 'code') setHistoryOpen(false)
   }, [workMode])
 
   useEffect(() => {
-    if ((workMode === 'diff' || workMode === 'markdown') && convertResult) {
+    if ((workMode === 'diff' || workMode === 'markdown' || workMode === 'code') && convertResult) {
       setConvertResult(null)
     }
   }, [workMode, convertResult])
@@ -722,6 +725,48 @@ function App() {
     'hover:bg-muted-foreground/40 focus-visible:bg-muted-foreground/45 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',
   )
 
+  const codeFormatStyle = useMemo(
+    () => ({
+      useTabs: settings.formatUseTabIndent,
+      tabWidth: settings.formatIndentSpaces,
+      lineEnding: settings.formatLineEnding,
+      trailingNewline: settings.formatTrailingNewline,
+    }),
+    [
+      settings.formatUseTabIndent,
+      settings.formatIndentSpaces,
+      settings.formatLineEnding,
+      settings.formatTrailingNewline,
+    ],
+  )
+
+  const codeFormatWorkspaceLabels = useMemo(
+    () => ({
+      input: t.input,
+      output: t.output,
+      format: t.format,
+      copy: t.copy,
+      copied: t.copied,
+      clear: t.clear,
+      parser: t.codeFormatParser,
+      empty: t.codeFormatEmpty,
+      formatErrorPrefix: t.codeFormatErrPrefix,
+      panelSourceAria: t.codeFormatSourceAria,
+      panelResultAria: t.codeFormatResultAria,
+      shortcut: t.codeFormatShortcut,
+      kindLabels: {
+        typescript: t.codeKindTypescript,
+        javascript: t.codeKindJavascript,
+        html: t.codeKindHtml,
+        css: t.codeKindCss,
+        markdown: t.codeKindMarkdown,
+        yaml: t.codeKindYaml,
+        graphql: t.codeKindGraphql,
+      },
+    }),
+    [t],
+  )
+
   const resultWorkspace = (
           <Panel
             id="panel-result"
@@ -1006,7 +1051,7 @@ function App() {
                 </div>
               </div>
               <ScrollArea className="min-h-0 flex-1 bg-background">
-                <div ref={outputRef} id="jsonex-output-region" className="flex min-h-full min-w-0 flex-1 flex-col" tabIndex={-1}>
+                <div ref={outputRef} id="sidefmt-output-region" className="flex min-h-full min-w-0 flex-1 flex-col" tabIndex={-1}>
                   {outputInner}
                 </div>
               </ScrollArea>
@@ -1025,12 +1070,14 @@ function App() {
         )}
       >
         <div className="flex min-w-0 flex-1 items-center gap-2">
-          <span
-            className="flex size-7 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary"
+          <img
+            src="/logo.svg"
+            alt=""
+            width={24}
+            height={24}
+            className="size-6 shrink-0 rounded-md object-contain dark:invert"
             aria-hidden
-          >
-            <HugeiconsIcon icon={CodeIcon} strokeWidth={2} className="size-4.25" />
-          </span>
+          />
           <div className="min-w-0">
             <h1 className="truncate text-[0.9375rem] font-semibold leading-none tracking-tight">{t.title}</h1>
             <p className="sr-only">{t.subtitle}</p>
@@ -1041,7 +1088,7 @@ function App() {
             type="single"
             value={workMode}
             onValueChange={(value) => {
-              if (value) setWorkMode(value as 'format' | 'diff' | 'markdown')
+              if (value) setWorkMode(value as WorkMode)
             }}
             variant="outline"
             size="sm"
@@ -1050,7 +1097,11 @@ function App() {
           >
             <ToggleGroupItem value="format" className="h-7 gap-1 px-2 text-xs">
               <HugeiconsIcon icon={CodeSquareIcon} data-icon strokeWidth={2} className="size-3.5 shrink-0 opacity-80" aria-hidden />
-              <span>{t.format}</span>
+              <span>{t.jsonTab}</span>
+            </ToggleGroupItem>
+            <ToggleGroupItem value="code" className="h-7 gap-1 px-2 text-xs">
+              <HugeiconsIcon icon={SourceCodeIcon} data-icon strokeWidth={2} className="size-3.5 shrink-0 opacity-80" aria-hidden />
+              <span>{t.codeFormatTab}</span>
             </ToggleGroupItem>
             <ToggleGroupItem value="markdown" className="h-7 gap-1 px-2 text-xs">
               <HugeiconsIcon icon={Doc01Icon} data-icon strokeWidth={2} className="size-3.5 shrink-0 opacity-80" aria-hidden />
@@ -1264,6 +1315,16 @@ function App() {
         editorFontSize={settings.editorFontSize}
         setA11yError={setA11yError}
       />
+    ) : workMode === 'code' ? (
+      <CodeFormatWorkspace
+        lang={lang}
+        editorStyle={editorStyle}
+        splitColHandleClass={splitColHandleClass}
+        resizeAria={t.resizeHandleAria}
+        style={codeFormatStyle}
+        setA11yError={setA11yError}
+        labels={codeFormatWorkspaceLabels}
+      />
     ) : (
       <JsonexMainLayout
         workMode={workMode === 'diff' ? 'diff' : 'format'}
@@ -1279,7 +1340,7 @@ function App() {
     )
 
   return (
-    <div id="jsonex-shell" data-code-theme={settings.codeTheme} className="flex h-full min-h-0 flex-col bg-background text-foreground antialiased">
+    <div id="sidefmt-shell" data-code-theme={settings.codeTheme} className="flex h-full min-h-0 flex-col bg-background text-foreground antialiased">
       <div role="status" aria-live="polite" className="sr-only">
         {a11yError ?? ''}
       </div>

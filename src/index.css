@@ -154,7 +154,7 @@
 }
 
 @layer components {
-  #jsonex-shell {
+  #sidefmt-shell {
     --token-keyword: #2563eb;
     --token-string: #059669;
     --token-number: #d97706;
@@ -164,7 +164,7 @@
     --token-comment: #71717a;
   }
 
-  .dark #jsonex-shell {
+  .dark #sidefmt-shell {
     --token-keyword: #60a5fa;
     --token-string: #34d399;
     --token-number: #fbbf24;
@@ -174,7 +174,7 @@
     --token-comment: #a1a1aa;
   }
 
-  #jsonex-shell[data-code-theme='ocean'] {
+  #sidefmt-shell[data-code-theme='ocean'] {
     --token-keyword: #0ea5e9;
     --token-string: #14b8a6;
     --token-number: #22c55e;
@@ -184,7 +184,7 @@
     --token-comment: #64748b;
   }
 
-  .dark #jsonex-shell[data-code-theme='ocean'] {
+  .dark #sidefmt-shell[data-code-theme='ocean'] {
     --token-keyword: #38bdf8;
     --token-string: #2dd4bf;
     --token-number: #4ade80;
@@ -194,7 +194,7 @@
     --token-comment: #94a3b8;
   }
 
-  #jsonex-shell[data-code-theme='mono'] {
+  #sidefmt-shell[data-code-theme='mono'] {
     --token-keyword: #374151;
     --token-string: #4b5563;
     --token-number: #6b7280;
@@ -204,7 +204,7 @@
     --token-comment: #9ca3af;
   }
 
-  .dark #jsonex-shell[data-code-theme='mono'] {
+  .dark #sidefmt-shell[data-code-theme='mono'] {
     --token-keyword: #d1d5db;
     --token-string: #9ca3af;
     --token-number: #e5e7eb;
@@ -214,7 +214,7 @@
     --token-comment: #6b7280;
   }
 
-  #jsonex-shell[data-code-theme='forest'] {
+  #sidefmt-shell[data-code-theme='forest'] {
     --token-keyword: #166534;
     --token-string: #0d9488;
     --token-number: #65a30d;
@@ -224,7 +224,7 @@
     --token-comment: #4b5563;
   }
 
-  .dark #jsonex-shell[data-code-theme='forest'] {
+  .dark #sidefmt-shell[data-code-theme='forest'] {
     --token-keyword: #4ade80;
     --token-string: #2dd4bf;
     --token-number: #bef264;
@@ -234,7 +234,7 @@
     --token-comment: #9ca3af;
   }
 
-  #jsonex-shell[data-code-theme='sunset'] {
+  #sidefmt-shell[data-code-theme='sunset'] {
     --token-keyword: #c2410c;
     --token-string: #ea580c;
     --token-number: #ca8a04;
@@ -244,7 +244,7 @@
     --token-comment: #6b7280;
   }
 
-  .dark #jsonex-shell[data-code-theme='sunset'] {
+  .dark #sidefmt-shell[data-code-theme='sunset'] {
     --token-keyword: #fb923c;
     --token-string: #fdba74;
     --token-number: #facc15;
@@ -254,7 +254,7 @@
     --token-comment: #a1a1aa;
   }
 
-  #jsonex-shell[data-code-theme='neon'] {
+  #sidefmt-shell[data-code-theme='neon'] {
     --token-keyword: #7c3aed;
     --token-string: #06b6d4;
     --token-number: #22c55e;
@@ -264,7 +264,7 @@
     --token-comment: #64748b;
   }
 
-  .dark #jsonex-shell[data-code-theme='neon'] {
+  .dark #sidefmt-shell[data-code-theme='neon'] {
     --token-keyword: #c084fc;
     --token-string: #22d3ee;
     --token-number: #4ade80;

@@ -1,5 +1,25 @@
 export type Lang = 'zh' | 'en'
 
+/** UI language when the system locale is not Chinese. */
+export const DEFAULT_UI_LANG: Lang = 'en'
+
+function localeTagLooksChinese(tag: string): boolean {
+  const n = tag.trim().toLowerCase().replace(/_/g, '-')
+  return n === 'zh' || n.startsWith('zh-')
+}
+
+/**
+ * Pick `zh` when any preferred browser locale is Chinese; otherwise {@link DEFAULT_UI_LANG}.
+ */
+export function resolveLangFromSystem(): Lang {
+  if (typeof navigator === 'undefined') return DEFAULT_UI_LANG
+  const prefs = [...(navigator.languages ?? []), navigator.language]
+  for (const raw of prefs) {
+    if (raw && localeTagLooksChinese(raw)) return 'zh'
+  }
+  return DEFAULT_UI_LANG
+}
+
 const zh = {
   title: 'SIDEFMT',
   subtitle: '侧栏工作台',

@@ -1126,9 +1126,10 @@ function App() {
           </Button>
           <Button
             variant="outline"
-            size="sm"
-            className="h-7 gap-1.5 px-2 text-xs whitespace-nowrap"
+            size="icon"
+            className="shrink-0"
             aria-label={t.theme}
+            title={theme === 'light' ? t.light : t.dark}
             onClick={toggleTheme}
           >
             {theme === 'light' ? (
@@ -1136,13 +1137,11 @@ function App() {
             ) : (
               <HugeiconsIcon icon={MoonIcon} data-icon strokeWidth={2} className="size-3.5 shrink-0 opacity-80" aria-hidden />
             )}
-            <span>{theme === 'light' ? t.light : t.dark}</span>
           </Button>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm" className="h-7 gap-1.5 px-2 text-xs whitespace-nowrap" aria-label={t.settings}>
+              <Button variant="outline" size="icon" className="shrink-0" aria-label={t.settings} title={t.settings}>
                 <HugeiconsIcon icon={Settings01Icon} data-icon strokeWidth={2} className="size-3.5 shrink-0 opacity-80" aria-hidden />
-                <span>{t.settings}</span>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-56 min-w-56">

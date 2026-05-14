@@ -1,0 +1,29 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: node scripts/verify-extension-manifest.mjs
+      - run: npm test
+      - run: npm run build
+      - name: Zip extension (Chrome load unpacked root)
+        run: cd dist && zip -r "../sidefmt-${{ github.ref_name }}-chrome.zip" .
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: sidefmt-${{ github.ref_name }}-chrome.zip
+          generate_release_notes: true
